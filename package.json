@@ -4,13 +4,15 @@
   "description": "bot for discord servers",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "config.json": "^0.0.4",
     "discord.js": "^12.5.3",
+    "firebase-admin": "^9.6.0",
     "nconf": "^0.7.1"
   },
   "devDependencies": {

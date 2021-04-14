@@ -1,0 +1,7 @@
+class RedCardHandler {
+
+    getMessage(){
+        return
+    }
+
+}

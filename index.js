@@ -1,8 +1,13 @@
-var fs    = require('fs');
+// CONFIG FILE
 var nconf = require('nconf');
-
 nconf.argv().env().file({ file: 'config.json' });
-
+// FIREBASE
+const admin = require('firebase-admin');
+admin.initializeApp({
+    credential: admin.credential.cert('pirate-bot-e12c3-firebase-adminsdk-g1cyf-1c48e3f223.json')
+});
+const db = admin.firestore();
+// DISCORD
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
