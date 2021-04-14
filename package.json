@@ -1,0 +1,17 @@
+{
+  "name": "piratebot",
+  "version": "1.0.0",
+  "description": "bot for discord servers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0"
+  }
+}
