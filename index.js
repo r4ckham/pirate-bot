@@ -1,6 +1,11 @@
-var config = require('config.json')
+var fs    = require('fs');
+var nconf = require('nconf');
+
+nconf.argv().env().file({ file: 'config.json' });
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
+
 
 client.once('ready', () => {
     console.log('Ready!');
@@ -18,4 +23,4 @@ client.on('message', message => {
 
 });
 
-client.login(config.BOT_TOKEN);
+client.login(nconf.get('BOT_TOKEN'));
