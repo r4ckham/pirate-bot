@@ -10,21 +10,41 @@ const db = admin.firestore();
 // DISCORD
 const Discord = require('discord.js');
 const client = new Discord.Client();
+// HANDLER
+const Moderation = require("./classes/Moderation");
 
 
 client.once('ready', () => {
-    console.log('Ready!');
+    console.log('\
+                    ██████╗  ██████╗ ████████╗    ███████╗████████╗ █████╗ ██████╗ ████████╗\n\
+                    ██╔══██╗██╔═══██╗╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝\n\
+                    ██████╔╝██║   ██║   ██║       ███████╗   ██║   ███████║██████╔╝   ██║   \n\
+                    ██╔══██╗██║   ██║   ██║       ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   \n\
+                    ██████╔╝╚██████╔╝   ██║       ███████║   ██║   ██║  ██║██║  ██║   ██║   \n\
+                    ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   \n\
+    ');
 });
 
 client.on('message', message => {
-    console.log(message);
-
     let author = message.author;
 
-    if(message.member.roles.cache.find(r => r.name === "Carton Rouge")) {
-        message.channel.send(`Ferme ta gueule ${message.author.username}, et oui t'as pris un rouge !`);
+    if (author.bot){
+        return;
     }
 
+    let verdict = Moderation.fetchPunishment(message.content);
+
+    verdict.then(punishment =>{
+        Moderation.processToPunishment(message, punishment);
+    });
+
+    if(message.member.roles.cache.find(r => r.name === "Carton Rouge")) {
+        message.delete({
+            timeout: 0,
+            reason: null,
+        });
+        message.channel.send(`Et oui t'as un rouge <@${message.author.id}> alors merci de fermer ta gueule !`);
+    }
 
 });
 
