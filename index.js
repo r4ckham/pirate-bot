@@ -54,7 +54,7 @@ app.listen(app.get('port'), function () {
             return;
         }
 
-        const args = message.content.slice((nconf.get('BOT_PREFIX')).length).trim().split(/ +/);
+        const args = message.content.slice((process.env.BOT_PREFIX).length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
 
         if (author.id === message.guild.owner.user.id) {
