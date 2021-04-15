@@ -1,10 +1,22 @@
 // CONFIG FILE
-var express = require('express');
-var app = express();
+const express = require('express');
+const { wakeDyno } = require('heroku-keep-awake');
+
+const DYNO_URL = 'https://banner-rackham.herokuapp.com/';
+
+const opts = {
+    interval: 30,
+    logging: true,
+    stopTimes: { start: '5:00', end: '06:00' }
+}
+
+const app = express();
+
 
 app.set('port', (process.env.PORT || 3456));
 
 app.listen(app.get('port'), function () {
+    wakeDyno(DYNO_URL, opts);
     const env = require('dotenv').config();
     const admin = require('firebase-admin');
     admin.initializeApp({
