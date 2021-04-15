@@ -10,13 +10,13 @@ class Moderation {
      * @param sentence {string}
      */
     static async fetchPunishment(sentence) {
-        let words = sentence.split(' ');
-        const snapshot = await this.db.collection('words').get();
+        const dictionary = await this.db.collection('dictonary').get();
         let punishment = null;
 
-        snapshot.forEach((doc) => {
-            words.forEach(word => {
-                if (word.toLowerCase() === doc.data().word.toLowerCase()) {
+        dictionary.forEach((doc) => {
+            doc.data().words.forEach(value => {
+                let regex = new RegExp(`(${value.toLowerCase()})`);
+                if (sentence.toLowerCase().match(regex)) {
                     punishment = doc.data().punishment_id;
                 }
             })
