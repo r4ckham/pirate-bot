@@ -57,14 +57,18 @@ app.listen(app.get('port'), function () {
         const args = message.content.slice((process.env.BOT_PREFIX).length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
 
-        if (author.id === message.guild.owner.user.id) {
-            if (command === "unban") {
-                let targetUser = client.users.fetch(args[0].replace(/\D/g, '')).then(r => {
+        if (command === "unban") {
+            if (message.guild.owner && author.id === message.guild.owner.user.id) {
+                client.users.fetch(args[0].replace(/\D/g, '')).then(r => {
                     UnbanCommand.execute(message, r);
                 });
+            } else {
+                message.delete({ timeout : 0, reason : null}).then(r => {
+                    message.channel.send(`<@${author.id}> seul le propriétaire du serveur est autorisé à dé-bannir !`);
+                })
             }
         }
-
+       
         let verdict = Moderation.fetchPunishment(message.content);
 
         verdict.then(punishment => {
