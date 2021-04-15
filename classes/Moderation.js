@@ -2,6 +2,8 @@ class Moderation {
 
     static admin = require('firebase-admin');
     static db = this.admin.firestore();
+    static yellowCardModel = require('../models/YellowCardModel');
+    static redCardModel = require('../models/RedCardModel');
 
     /**
      * @returns {null|number}
@@ -29,23 +31,27 @@ class Moderation {
      * @param message
      * @param punishment {null|string}
      */
-    static processToPunishment(user, yellowCard, redCard,message, punishment){
-        if(punishment === null){
+    static processToPunishment(user, yellowCard, redCard, message, punishment) {
+        if (punishment === null) {
             return;
         }
 
-        if(user.hasYellowCard()){
+        if (user.hasYellowCard()) {
 
-            message.member.roles.add(redCard).then(rouge => {
-                message.member.roles.remove(yellowCard).then(jaune => {
-                message.channel.send(`Et voila bravo <@${message.author.id}> tu viens de te manger un rouge, allez @+ ! `);
-                message.guild.channels.forEach(channel => {
-                    channel.updateOverwrite(message.author, {
-                        SEND_MESSAGES: false
-                    })
-                })
-                setTimeout(() => {
-                        message.member.roles.remove(redCard).then(red=>{
+            user.addRedCard(redCard).then(rouge => {
+                user.removeYellowCard(yellowCard).then(jaune => {
+
+                    this.redCardModel.saveCard(user).then(r => console.log(r));
+
+                    message.channel.send(`Et voila bravo <@${message.author.id}> tu viens de te manger un rouge, allez @+ ! `);
+                    message.guild.channels.forEach(channel => {
+                        channel.updateOverwrite(message.author, {
+                            SEND_MESSAGES: false
+                        })
+                    });
+
+                    setTimeout(() => {
+                        user.removeRedCard(redCard).then(red => {
                             message.channel.send(`Bon retour parmis nous <@${message.author.id}> mais restes calmes ! !`);
                             message.guild.channels.forEach(channel => {
                                 channel.updateOverwrite(message.author, {
@@ -53,20 +59,22 @@ class Moderation {
                                 })
                             })
                         });
-                    }, 1000*60*10);
+                    }, 1000 * 60 * 10);
                 });
             });
         }
 
-        if( !user.hasRedCard() && !user.hasYellowCard() ){
+        if (!user.hasRedCard() && !user.hasYellowCard()) {
+
+            this.yellowCardModel.saveCard(user).then(r => console.log(r));
 
             message.member.roles.add(yellowCard).then(data => {
                 message.channel.send(`Attention <@${message.author.id}> tu viens de te manger un jaune, la prochaine c'est au frigo !`);
                 setTimeout(() => {
-                        message.member.roles.remove(yellowCard).then(red=>{
-                            message.channel.send(`Bravo <@${message.author.id}> ton jaune à prit fin !`);
-                        });
-                    }, 1000*60);
+                    user.removeYellowCard(yellowCard).then(red => {
+                        message.channel.send(`Bravo <@${message.author.id}> ton jaune à prit fin !`);
+                    });
+                }, 1000 * 60);
             });
         }
     }

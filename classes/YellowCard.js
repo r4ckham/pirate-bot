@@ -13,7 +13,6 @@ class YellowCard {
         return this.role;
     }
 
-
 }
 
 module.exports = YellowCard;
