@@ -49,10 +49,11 @@ class Moderation {
 
                     this.redCardModel.saveCard(user).then(r => console.log(r));
 
-                    message.channel.send(`
-                        ==== ROUGE ==== \n Allez @ + <@${message.author.id}> \n ${punishment.response.toLowerCase()}
-                    `);
-                    message.guild.channels.forEach(channel => {
+                    message.channel.send(`! CARTON ROUGE ! \nAllez @ + <@${message.author.id}> ${punishment.response.toLowerCase()} \nOn se revoit dans ${punishment.getMinutes().toString()} minutes ;)`, {
+                        files: ["https://24.media.tumblr.com/2246c2da7c85dde46837f70ed72785ea/tumblr_mgkv07TndM1rdg4zpo1_400.gif"]
+                    });
+
+                    message.guild.channels.cache.forEach(channel => {
                         channel.updateOverwrite(message.author, {
                             SEND_MESSAGES: false
                         })
@@ -60,8 +61,8 @@ class Moderation {
 
                     setTimeout(() => {
                         user.removeRedCard(redCard).then(red => {
-                            message.channel.send(`Bon retour parmis nous <@${message.author.id}> mais restes calmes ! !`);
-                            message.guild.channels.forEach(channel => {
+                            message.channel.send(`Bon retour parmis nous <@${message.author.id}> et oublie pas : ${punishment.response.toLowerCase()}`);
+                            message.guild.channels.cache.forEach(channel => {
                                 channel.updateOverwrite(message.author, {
                                     SEND_MESSAGES: true
                                 })
@@ -78,14 +79,19 @@ class Moderation {
 
             message.member.roles.add(yellowCard).then(data => {
                 message.channel.send(
-                    `! CARTON JAUNE ! \nAttention <@${message.author.id}> ${punishment.response.toLowerCase()}`,
-                    {
+                    `! CARTON JAUNE ! \nAttention <@${message.author.id}> ${punishment.response.toLowerCase()} \nReste tranquile pendant ${punishment.getMinutes().toString()} minutes`, {
                         files : ['https://media0.giphy.com/media/3o72Fiu6B2vBEwZnIA/giphy.gif'],
                     }
                 );
                 setTimeout(() => {
                     user.removeYellowCard(yellowCard).then(red => {
-                        message.channel.send(`Bravo <@${message.author.id}> ton jaune à prit fin !`);
+                        let hasRed = user.hasRedCard();
+                        if(!hasRed){
+                            message.channel.send(`Bravo <@${message.author.id}> ton jaune à prit fin !`);
+                        }else{
+                            message.channel.send(`Bravo <@${message.author.id}> ton jaune à prit fin mais t'as encore un rouge alors fermes encore un peu ta bouche ;)`);
+                        }
+
                     });
                 }, 1000 * punishment.duration);
             });

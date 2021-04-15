@@ -50,7 +50,9 @@ client.on('message', message => {
             timeout: 0,
             reason: null,
         });
-        message.channel.send(`Et oui t'as un rouge <@${message.author.id}> alors merci de fermer ta gueule !`);
+        message.channel.send(`Et oui t'as un rouge <@${message.author.id}> alors merci de fermer ta gueule !`, {
+            files : ["https://media2.giphy.com/media/l3q2KrjUq4DRHCQzm/giphy.gif"]
+        });
     }
 
 });

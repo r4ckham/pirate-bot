@@ -35,6 +35,10 @@ class Punishment {
     set duration(value) {
         this._duration = value;
     }
+
+    getMinutes(){
+        return (this.duration / 60).toFixed(2);
+    }
 }
 
 module.exports = Punishment;
