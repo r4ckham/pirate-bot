@@ -80,7 +80,7 @@ class Moderation {
             message.member.roles.add(yellowCard).then(data => {
                 message.channel.send(
                     `! CARTON JAUNE ! \nAttention <@${message.author.id}> ${punishment.response.toLowerCase()} \nReste tranquile pendant ${punishment.getMinutes().toString()} minutes`, {
-                        files : ['https://media0.giphy.com/media/3o72Fiu6B2vBEwZnIA/giphy.gif'],
+                        files : ['./assets/yellow-card-gif/' + ( Math.floor(Math.random() * 3) )+ '.gif'],
                     }
                 );
                 setTimeout(() => {
