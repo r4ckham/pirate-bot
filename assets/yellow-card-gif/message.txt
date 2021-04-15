@@ -1,0 +1,23 @@
+2021-04-15T15:45:04.455875+00:00 app[web.1]: /app/node_modules/firebase-admin/lib/credential/credential-internal.js:151
+2021-04-15T15:45:04.455890+00:00 app[web.1]: throw new error_1.FirebaseAppError(error_1.AppErrorCodes.INVALID_CREDENTIAL, 'Failed to parse service account json file: ' + error);
+2021-04-15T15:45:04.455891+00:00 app[web.1]: ^
+2021-04-15T15:45:04.455891+00:00 app[web.1]: 
+2021-04-15T15:45:04.455893+00:00 app[web.1]: FirebaseAppError: Failed to parse service account json file: Error: ENOENT: no such file or directory, open 'pirate-bot-e12c3-firebase-adminsdk-g1cyf-1c48e3f223.json'
+2021-04-15T15:45:04.455895+00:00 app[web.1]: at FirebaseAppError.FirebaseError [as constructor] (/app/node_modules/firebase-admin/lib/utils/error.js:44:28)
+2021-04-15T15:45:04.455895+00:00 app[web.1]: at FirebaseAppError.PrefixedFirebaseError [as constructor] (/app/node_modules/firebase-admin/lib/utils/error.js:90:28)
+2021-04-15T15:45:04.455897+00:00 app[web.1]: at new FirebaseAppError (/app/node_modules/firebase-admin/lib/utils/error.js:125:28)
+2021-04-15T15:45:04.455897+00:00 app[web.1]: at Function.ServiceAccount.fromPath (/app/node_modules/firebase-admin/lib/credential/credential-internal.js:151:19)
+2021-04-15T15:45:04.455898+00:00 app[web.1]: at new ServiceAccountCredential (/app/node_modules/firebase-admin/lib/credential/credential-internal.js:67:28)
+2021-04-15T15:45:04.455899+00:00 app[web.1]: at Object.exports.cert (/app/node_modules/firebase-admin/lib/credential/credential.js:34:54)
+2021-04-15T15:45:04.455900+00:00 app[web.1]: at Object.<anonymous> (/app/index.js:7:34)
+2021-04-15T15:45:04.455900+00:00 app[web.1]: at Module._compile (internal/modules/cjs/loader.js:1063:30)
+2021-04-15T15:45:04.455901+00:00 app[web.1]: at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+2021-04-15T15:45:04.455902+00:00 app[web.1]: at Module.load (internal/modules/cjs/loader.js:928:32) {
+2021-04-15T15:45:04.455902+00:00 app[web.1]: errorInfo: {
+2021-04-15T15:45:04.455950+00:00 app[web.1]: code: 'app/invalid-credential',
+2021-04-15T15:45:04.455954+00:00 app[web.1]: message: "Failed to parse service account json file: Error: ENOENT: no such file or directory, open 'pirate-bot-e12c3-firebase-adminsdk-g1cyf-1c48e3f223.json'"
+2021-04-15T15:45:04.455955+00:00 app[web.1]: },
+2021-04-15T15:45:04.455956+00:00 app[web.1]: codePrefix: 'app'
+2021-04-15T15:45:04.455957+00:00 app[web.1]: }
+2021-04-15T15:45:04.497442+00:00 app[web.1]: [nodemon] app crashed - waiting for file changes before starting...
+

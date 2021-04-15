@@ -40,8 +40,6 @@ class Moderation {
             return;
         }
 
-        console.log("punishment", punishment);
-
         if (user.hasYellowCard()) {
 
             user.addRedCard(redCard).then(rouge => {
