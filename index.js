@@ -30,18 +30,18 @@ app.listen(app.get('port'), function () {
     const YellowCard = require("./classes/YellowCard");
     const RedCard = require("./classes/RedCard");
     const User = require("./classes/User");
-    const UnbanCommand = require("./commands/UnbanCommand");
+    const FabricCommand = require("./commands/FabricCommand");
 
 
     client.once('ready', () => {
         console.log('\
-                ██████╗  ██████╗ ████████╗    ███████╗████████╗ █████╗ ██████╗ ████████╗\n\
-                ██╔══██╗██╔═══██╗╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝\n\
-                ██████╔╝██║   ██║   ██║       ███████╗   ██║   ███████║██████╔╝   ██║   \n\
-                ██╔══██╗██║   ██║   ██║       ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   \n\
-                ██████╔╝╚██████╔╝   ██║       ███████║   ██║   ██║  ██║██║  ██║   ██║   \n\
-                ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   \n\
-');
+            ██████╗  ██████╗ ████████╗    ███████╗████████╗ █████╗ ██████╗ ████████╗\n\
+            ██╔══██╗██╔═══██╗╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝\n\
+            ██████╔╝██║   ██║   ██║       ███████╗   ██║   ███████║██████╔╝   ██║   \n\
+            ██╔══██╗██║   ██║   ██║       ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   \n\
+            ██████╔╝╚██████╔╝   ██║       ███████║   ██║   ██║  ██║██║  ██║   ██║   \n\
+            ╚═════╝  ╚═════╝    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   \n\
+        ');
     });
 
     client.on('message', message => {
@@ -56,15 +56,23 @@ app.listen(app.get('port'), function () {
 
         const args = message.content.slice((process.env.BOT_PREFIX).length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
+        let regex = new RegExp(`(^${process.env.BOT_PREFIX})`);
 
-        if (command === "unban") {
+        if (message.content.match(regex)) {
             if (message.guild.owner && author.id === message.guild.owner.user.id) {
-                client.users.fetch(args[0].replace(/\D/g, '')).then(r => {
-                    UnbanCommand.execute(message, r);
-                });
+
+                let exec = FabricCommand.getCommand(command, message);
+                if(exec){
+                    if (exec.name === "unban"){
+                        client.users.fetch(args[0].replace(/\D/g, '')).then(r => {
+                            exec.execute(message, r);
+                        });
+                    }
+                }
+
             } else {
                 message.delete({ timeout : 0, reason : null}).then(r => {
-                    message.channel.send(`<@${author.id}> seul le propriétaire du serveur est autorisé à dé-bannir !`);
+                    message.channel.send(`<@${author.id}> seul le propriétaire du serveur est autorisé à utliser les commandes !`);
                 })
             }
         }
@@ -80,9 +88,24 @@ app.listen(app.get('port'), function () {
                 timeout: 0,
                 reason: null,
             });
-            message.channel.send(`Et oui t'as un rouge <@${message.author.id}> alors merci de fermer ta gueule !`, {
-                files: ["https://media2.giphy.com/media/l3q2KrjUq4DRHCQzm/giphy.gif"]
+
+            let embed = new Discord.MessageEmbed({
+                color: "#ffff00",
+                title: 'Rappel',
+                description : `Carton au nom de : <@!${message.author.id}>`,
+                thumbnail: {
+                    url: "https://media2.giphy.com/media/l3q2KrjUq4DRHCQzm/giphy.gif"
+                },
+                fields: [
+                    {
+                        name: "Note de l'arbitre",
+                        value: "Et oui t'as un rouge alors merci de fermer ta gueule !",
+                    },
+                ],
+                timestamp: new Date(),
             });
+
+            message.channel.send(embed);
         }
 
     });

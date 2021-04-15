@@ -2,7 +2,6 @@ module.exports = {
     name: 'unban',
     description: 'Unban Command for hopeless users!',
     execute(message, targetUser) {
-
         let redCard = message.guild.roles.cache.find(r => r.name === "Carton Rouge");
         let user = message.guild.members.cache.find(p=> p.id === targetUser.id);
 

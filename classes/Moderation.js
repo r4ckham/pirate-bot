@@ -1,4 +1,5 @@
 const PunishmentModel = require("../models/PunishmentModel");
+const Discord = require("discord.js");
 
 class Moderation {
 
@@ -47,9 +48,30 @@ class Moderation {
 
                     this.redCardModel.saveCard(user).then(r => console.log(r));
 
-                    message.channel.send(`! CARTON ROUGE ! \nAllez @ + <@${message.author.id}> ${punishment.response.toLowerCase()} \nOn se revoit dans ${punishment.getMinutes().toString()} minutes ;)`, {
-                        files: ["https://24.media.tumblr.com/2246c2da7c85dde46837f70ed72785ea/tumblr_mgkv07TndM1rdg4zpo1_400.gif"]
+                    let prettyRedCard = new Discord.MessageEmbed({
+                        color: "#bf0000",
+                        title: 'Carton Rouge',
+                        description : `Carton au nom de : <@!${message.author.id}>`,
+                        thumbnail: {
+                            url: "https://24.media.tumblr.com/2246c2da7c85dde46837f70ed72785ea/tumblr_mgkv07TndM1rdg4zpo1_400.gif",
+                        },
+                        fields: [
+                            {
+                                name: `Phrase originale  :`,
+                                value: message.content,
+                            },
+                            {
+                                name: "Note de l'arbitre",
+                                value: punishment.response,
+                            },
+                        ],
+                        timestamp: new Date(),
+                        footer: {
+                            text: `On se revoit dans ${punishment.getMinutes().toString()} minutes !`,
+                        },
                     });
+
+                    message.channel.send(prettyRedCard);
 
                     message.guild.channels.cache.forEach(channel => {
                         channel.updateOverwrite(message.author, {
@@ -76,11 +98,33 @@ class Moderation {
             this.yellowCardModel.saveCard(user).then(r => console.log(r));
 
             message.member.roles.add(yellowCard).then(data => {
-                message.channel.send(
-                    `! CARTON JAUNE ! \nAttention <@${message.author.id}> ${punishment.response.toLowerCase()} \nReste tranquile pendant ${punishment.getMinutes().toString()} minutes`, {
-                        files : ['./assets/yellow-card-gif/' + ( Math.floor(Math.random() * 3) )+ '.gif'],
-                    }
-                );
+
+                const attachment = new Discord.MessageAttachment('./assets/yellow-card-gif/' + ( Math.floor(Math.random() * 3) )+ '.gif', 'carton.gif');
+                let prettyYellowCard = new Discord.MessageEmbed({
+                    color: "#ffff00",
+                    title: 'Carton Jaune',
+                    description : `Carton au nom de : <@!${message.author.id}>`,
+                    thumbnail: {
+                        url: "attachment://carton.gif"
+                    },
+                    fields: [
+                        {
+                            name: `Phrase originale  :`,
+                            value: message.content,
+                        },
+                        {
+                            name: "Note de l'arbitre",
+                            value: punishment.response,
+                        },
+                    ],
+                    timestamp: new Date(),
+                    footer: {
+                        text: `Un conseil : reste tranquille pendant ${punishment.getMinutes().toString()} minutes sinon c'est frigo !`,
+                    },
+                }).attachFiles(attachment);
+
+                message.channel.send(prettyYellowCard);
+
                 setTimeout(() => {
                     user.removeYellowCard(yellowCard).then(red => {
                         let hasRed = user.hasRedCard();
