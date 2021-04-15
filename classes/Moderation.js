@@ -4,7 +4,7 @@ class Moderation {
     static db = this.admin.firestore();
 
     /**
-     * @returns {*}
+     * @returns {null|number}
      * @param sentence {string}
      */
     static async fetchPunishment(sentence) {
@@ -15,7 +15,7 @@ class Moderation {
         snapshot.forEach((doc) => {
             words.forEach(word => {
                 if (word.toLowerCase() === doc.data().word.toLowerCase()) {
-                    punishment = doc.data().punishment;
+                    punishment = doc.data().punishment_id;
                 }
             })
         });
@@ -24,32 +24,32 @@ class Moderation {
 
     /**
      *
+     * @param redCard {Role}
+     * @param yellowCard {Role}
      * @param message
      * @param punishment {null|string}
      */
-    static processToPunishment(message, punishment){
+    static processToPunishment(user, yellowCard, redCard,message, punishment){
         if(punishment === null){
             return;
         }
 
-        if(message.member.roles.cache.find(r => r.name === "Carton Jaune")){
+        if(user.hasYellowCard()){
 
-            let cr = message.member.guild.roles.cache.find(r => r.name === "Carton Rouge")
-            let cj =  message.member.guild.roles.cache.find(r => r.name === "Carton Jaune")
-            message.member.roles.add(cr).then(rouge => {
-                message.member.roles.remove(cj).then(jaune => {
-                message.channel.send(`Et voila bravo <@${message.author.id}> tu viens de te manger un rouge, allez @+ !`);
+            message.member.roles.add(redCard).then(rouge => {
+                message.member.roles.remove(yellowCard).then(jaune => {
+                message.channel.send(`Et voila bravo <@${message.author.id}> tu viens de te manger un rouge, allez @+ ! `);
                 message.guild.channels.forEach(channel => {
                     channel.updateOverwrite(message.author, {
                         SEND_MESSAGES: false
                     })
                 })
                 setTimeout(() => {
-                        message.member.roles.remove(cr).then(red=>{
-                            message.channel.send(`Bon retour parmis nous <@${message.author.id}> mais restes calmes !`);
+                        message.member.roles.remove(redCard).then(red=>{
+                            message.channel.send(`Bon retour parmis nous <@${message.author.id}> mais restes calmes ! !`);
                             message.guild.channels.forEach(channel => {
                                 channel.updateOverwrite(message.author, {
-                                    SEND_MESSAGES: false
+                                    SEND_MESSAGES: true
                                 })
                             })
                         });
@@ -58,13 +58,15 @@ class Moderation {
             });
         }
 
-        if(
-            !message.member.roles.cache.find(r => r.name === "Carton Jaune") &&
-            !message.member.roles.cache.find(r => r.name === "Carton Rouge")
-        ){
-            let cj = message.member.guild.roles.cache.find(r => r.name === "Carton Jaune")
-            message.member.roles.add(cj).then(data => {
+        if( !user.hasRedCard() && !user.hasYellowCard() ){
+
+            message.member.roles.add(yellowCard).then(data => {
                 message.channel.send(`Attention <@${message.author.id}> tu viens de te manger un jaune, la prochaine c'est au frigo !`);
+                setTimeout(() => {
+                        message.member.roles.remove(yellowCard).then(red=>{
+                            message.channel.send(`Bravo <@${message.author.id}> ton jaune à prit fin !`);
+                        });
+                    }, 1000*60);
             });
         }
     }
