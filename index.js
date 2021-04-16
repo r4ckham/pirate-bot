@@ -7,7 +7,7 @@ const DYNO_URL = 'https://banner-rackham.herokuapp.com/';
 const opts = {
     interval: 30,
     logging: true,
-    stopTimes: { start: '5:00', end: '06:00' }
+    stopTimes: { start: '5:59', end: '06:00' }
 }
 
 const app = express();
@@ -57,10 +57,10 @@ app.listen(app.get('port'), function () {
     });
 
     client.on('message', message => {
-        let author = message.author;
-        let yellowCard = new YellowCard(message.guild.roles);
-        let redCard = new RedCard(message.guild.roles);
-        let user = new User(author.id, message.member.roles);
+        const author = message.author;
+        const yellowCard = new YellowCard(message.guild.roles);
+        const redCard = new RedCard(message.guild.roles);
+        const user = new User(author.id, message.member.roles);
 
         if (author.bot) {
             return;
@@ -68,12 +68,12 @@ app.listen(app.get('port'), function () {
 
         const args = message.content.slice((process.env.BOT_PREFIX).length).trim().split(/ +/);
         const command = args.shift().toLowerCase();
-        let regex = new RegExp(`(^${process.env.BOT_PREFIX})`);
+        const regex = new RegExp(`(^${process.env.BOT_PREFIX})`);
 
         if (message.content.match(regex)) {
             if (message.guild.owner && author.id === message.guild.owner.user.id) {
 
-                let exec = FabricCommand.getCommand(command, message);
+                const exec = FabricCommand.getCommand(command, message);
                 if(exec){
                     if (exec.name === "unban"){
                         client.users.fetch(args[0].replace(/\D/g, '')).then(r => {
@@ -89,7 +89,7 @@ app.listen(app.get('port'), function () {
             }
         }
        
-        let verdict = Moderation.fetchPunishment(message.content);
+        const verdict = Moderation.fetchPunishment(message.content);
 
         verdict.then(punishment => {
             Moderation.processToPunishment(user, yellowCard.getRole(), redCard.getRole(), message, punishment);
@@ -101,7 +101,7 @@ app.listen(app.get('port'), function () {
                 reason: null,
             });
 
-            let embed = new Discord.MessageEmbed({
+            const embed = new Discord.MessageEmbed({
                 color: "#ffff00",
                 title: 'Rappel',
                 description : `Carton au nom de : <@!${message.author.id}>`,
