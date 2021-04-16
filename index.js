@@ -5,7 +5,7 @@ const { wakeDyno } = require('heroku-keep-awake');
 const DYNO_URL = 'https://banner-rackham.herokuapp.com/';
 
 const opts = {
-    interval: 30,
+    interval: 20,
     logging: true,
     stopTimes: { start: '5:59', end: '06:00' }
 }
