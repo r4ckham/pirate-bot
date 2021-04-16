@@ -2,7 +2,7 @@
 
 ### Installation
 
-- ̀git clone git@github.com:r4ckham/pirate-bot.git`
+- `git clone git@github.com:r4ckham/pirate-bot.git`
 - `npm i` 
 - `npm start` 
 
