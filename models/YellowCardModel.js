@@ -1,14 +1,13 @@
+const admin = require('firebase-admin');
+
+const db = admin.firestore();
 class YellowCardModel {
-    static admin = require('firebase-admin');
-    static db = this.admin.firestore();
-
-    static async saveCard(user){
-        return this.db.collection('yellowCard').add({
-            userId: user.id,
-            date: Date.now(),
-        });
-    }
-
+  static async saveCard(user) {
+    return db.collection('yellowCard').add({
+      userId: user.id,
+      date: Date.now(),
+    });
+  }
 }
 
 module.exports = YellowCardModel;
