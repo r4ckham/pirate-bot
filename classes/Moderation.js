@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const admin = require('firebase-admin');
 
 const db = admin.firestore();
-const PunishmentModel = require('../models/PunishmentModel.js').default;
+const PunishmentModel = require('../models/PunishmentModel');
 const Utils = require('../Utils/Utils');
 const yellowCardModel = require('../models/YellowCardModel');
 const redCardModel = require('../models/RedCardModel');

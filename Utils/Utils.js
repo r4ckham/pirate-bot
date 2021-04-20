@@ -18,11 +18,11 @@ module.exports = {
     fields: [
       {
         name: 'Phrase originale  :',
-        value: message.content,
+        value: message && message.content,
       },
       {
         name: "Note de l'arbitre",
-        value: punishment.response,
+        value: punishment.response || punishment,
       },
     ],
     timestamp: new Date(),

@@ -83,32 +83,32 @@ app.listen(app.get('port'), () => {
               exec.execute(message, r);
             });
           }
-        } else {
-          message.delete({ timeout: 0, reason: null }).then(() => {
-            message.channel.send(`<@${author.id}> seul le propriétaire du serveur est autorisé à utliser les commandes !`);
-          });
         }
+      } else {
+        message.delete({ timeout: 0, reason: null }).then(() => {
+          message.channel.send(`<@${author.id}> seul le propriétaire du serveur est autorisé à utliser les commandes !`);
+        });
       }
+    }
 
-      const verdict = Moderation.fetchPunishment(message.content);
+    const verdict = Moderation.fetchPunishment(message.content);
 
-      verdict.then((punishment) => {
-        Moderation.processToPunishment(
-          user, yellowCard.getRole(),
-          redCard.getRole(),
-          message,
-          punishment,
-        );
+    verdict.then((punishment) => {
+      Moderation.processToPunishment(
+        user, yellowCard.getRole(),
+        redCard.getRole(),
+        message,
+        punishment,
+      );
+    });
+
+    if (message.member.roles.cache.find((r) => r.name === 'Carton Rouge')) {
+      message.delete({
+        timeout: 0,
+        reason: null,
       });
 
-      if (message.member.roles.cache.find((r) => r.name === 'Carton Rouge')) {
-        message.delete({
-          timeout: 0,
-          reason: null,
-        });
-
-        message.channel.send(Utils.createEmbededMessage('#ffff00', 'Rappel', 'https://media2.giphy.com/media/l3q2KrjUq4DRHCQzm/giphy.gif', message));
-      }
+      message.channel.send(Utils.createEmbededMessage('#ffff00', 'Rappel', 'https://media2.giphy.com/media/l3q2KrjUq4DRHCQzm/giphy.gif', message, "Et oui t'as un rouge alors merci de fermer ta gueule !"));
     }
   });
 

@@ -1,44 +1,44 @@
+/* eslint-disable no-underscore-dangle */
 class Punishment {
-
-    /**
+  /**
      *
      * @param id {number}
      * @param response {string}
      * @param time {number}
      */
-    constructor(id, response, time) {
-        this._id = id;
-        this._response = response;
-        this._duration = time;
-    }
+  constructor(id, response, time) {
+    this._id = id;
+    this._response = response;
+    this._duration = time;
+  }
 
-    get id() {
-        return this._id;
-    }
+  get id() {
+    return this._id;
+  }
 
-    set id(value) {
-        this._id = value;
-    }
+  set id(value) {
+    this._id = value;
+  }
 
-    get response() {
-        return this._response;
-    }
+  get response() {
+    return this._response;
+  }
 
-    set response(value) {
-        this._response = value;
-    }
+  set response(value) {
+    this._response = value;
+  }
 
-    get duration() {
-        return this._duration;
-    }
+  get duration() {
+    return this._duration;
+  }
 
-    set duration(value) {
-        this._duration = value;
-    }
+  set duration(value) {
+    this._duration = value;
+  }
 
-    getMinutes(){
-        return (this.duration / 60).toFixed(2);
-    }
+  getMinutes() {
+    return (this.duration / 60).toFixed(2);
+  }
 }
 
 module.exports = Punishment;
